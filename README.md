@@ -7,6 +7,7 @@ sudo apt update
 sudo apt install ufw
 sudo apt install curl
 sudo apt install nano
+sudo apt install git
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow ssh
