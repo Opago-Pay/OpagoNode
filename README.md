@@ -48,3 +48,7 @@ docker volume create clightning_data
 ```
 nano docker-compose.yml
 ```
+# Run Node
+```
+docker-compose up -d
+```
