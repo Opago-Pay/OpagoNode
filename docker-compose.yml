@@ -1,0 +1,52 @@
+version: "3"
+services:
+  btc:
+    image: nicolasdorier/docker-bitcoin:22.0
+    container_name: btc
+    environment:
+      BITCOIN_EXTRA_ARGS: |
+        whitelist=0.0.0.0/0
+        server=1
+        rpcuser=opago
+        rpcpassword=password
+    expose:
+      - "18332"
+    ports:
+      - "0.0.0.0:18333:18333"
+    volumes:
+      - "bitcoin_data:/data"
+    networks:
+      - node
+ clightning:
+    image: elementsproject/lightningd:latest
+    container_name: cln
+    command:
+      - --bitcoin-rpcconnect=btc
+      - --bitcoin-rpcuser=opago
+      - --bitcoin-rpcpassword=password
+      - --plugin-dir=/usr/libexec/c-lightning/plugins
+      - --alias=alias
+      - --log-level=debug
+    environment:
+      EXPOSE_TCP: "true"
+    expose:
+      - "9735"
+    ports:
+      - "0.0.0.0:9735:9735"
+    volumes:
+      - "clightning_data:/root/.lightning"
+      - "bitcoin_data:/root/.bitcoin"
+    links:
+      - btc
+    networks:
+      - node
+
+volumes:
+  bitcoin_data:
+    external: true
+  clightning_data:
+    external: true
+
+networks:
+  node:
+      name: node
