@@ -1,4 +1,4 @@
-With this repository you can easily install your own node as an alternative to using opag's node as a service.
+With this repository you can easily install your own node as an alternative to using opag's node as a service. Tested with a mininal Debian 11 install.
 
 # Prepare node installation
 ## install ufw as firewall and fail2ban for ssh bruteforce protection
