@@ -1,52 +1,115 @@
 version: "3"
 services:
-  btc:
-    image: nicolasdorier/docker-bitcoin:22.0
+  caddy:
+    image: opago/caddy:latest
+    container_name: caddy
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - CADDY_INGRESS_NETWORKS=node
+    networks:
+      - node
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy:/data
+    restart: always
+    
+  tor:
+    image: opago/tor:latest
+    container_name: tor
+    ports:
+      - 9050:9050
+    networks:
+      - node
+    volumes:
+      - ./tor:/etc/tor/
+    restart: always
+    
+  bitcoin:
+    image: opago/bitcoin:latest
     container_name: btc
-    environment:
-      BITCOIN_EXTRA_ARGS: |
-        whitelist=0.0.0.0/0
-        server=1
-        rpcuser=opago
-        rpcpassword=password
-    expose:
-      - "18332"
-    ports:
-      - "0.0.0.0:18333:18333"
     volumes:
-      - "bitcoin_data:/data"
+      - ./bitcoin:/data/bitcoin/
+      - bitcoin:/data
+    labels:
+      caddy: bitcoin.yourdomain.de #change before use
+      caddy.reverse_proxy: "{{upstreams 8333}}"
+      caddy.tls: "internal"
+    networks:
+       - node
+    entrypoint: "bitcoind -datadir=/data -config=/data/bitcoin/bitcoin.conf"
+    depends_on:
+      - "caddy"
+    restart: always
+    
+  lnd:
+    image: opago/lnd:latest
+    container_name: lnd
+    volumes:
+      - ./lnd:/root/.lnd
+    entrypoint: "lnd"
     networks:
       - node
- clightning:
-    image: elementsproject/lightningd:latest
-    container_name: cln
-    command:
-      - --bitcoin-rpcconnect=btc
-      - --bitcoin-rpcuser=opago
-      - --bitcoin-rpcpassword=password
-      - --plugin-dir=/usr/libexec/c-lightning/plugins
-      - --alias=alias
-      - --log-level=debug
-    environment:
-      EXPOSE_TCP: "true"
-    expose:
-      - "9735"
+    labels:
+      caddy: lnd.yourdomain.de #change before use
+      caddy.reverse_proxy: "{{upstreams 9735}}"
+      caddy.tls: "internal"
+    depends_on:
+      - "caddy"
+      - "tor"
     ports:
-      - "0.0.0.0:9735:9735"
-    volumes:
-      - "clightning_data:/root/.lightning"
-      - "bitcoin_data:/root/.bitcoin"
-    links:
-      - btc
-    networks:
-      - node
+     - 9735:9735
+    restart: always
 
+  lnbits:
+    image: opago/lnbits:latest
+    container_name: lnbits
+    volumes:
+      - "./lnbits:/app/data"
+      - "./lnd:/root/.lnd"
+    networks:
+      - node
+    labels:
+      caddy: lnbits.yourdomain.de #change before use
+      caddy.reverse_proxy: "{{upstreams 5000}}"
+      caddy.tls: "internal"
+    environment:
+      - "LND_REST_ENDPOINT=https://lnd:10009/"
+    depends_on:
+      - "caddy"
+      - "lnd"
+    restart: always
+    
+  thunderhub:
+    image: opago/thunderhub:latest
+    container_name: thunderhub
+    volumes:
+      - "./lnd:/root/.lnd"
+      - "./thunderhub:/root/th"
+    networks:
+      - node
+    labels:
+      caddy: thunderhub.yourdomain.de #change before use
+      caddy.reverse_proxy: "{{upstreams 3500}}"
+      caddy.tls: "internal"
+    environment:
+      - PORT=3500
+      - SSO_SERVER_URL=lnd:10009
+      - SSO_CERT_PATH=/root/.lnd/tls.cert
+      - SSO_MACAROON_PATH=/root/.lnd/data/chain/bitcoin/mainnet
+      - ACCOUNT_CONFIG_PATH=/root/th/config.yaml
+    depends_on:
+      - "caddy"
+      - "lnd"
+    restart: always
+    
 volumes:
-  bitcoin_data:
-    external: true
-  clightning_data:
-    external: true
+  caddy:
+    name: caddy
+  bitcoin:
+    name: bitcoin
 
 networks:
   node:
-      name: node
+    name: node
