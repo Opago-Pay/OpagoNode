@@ -38,7 +38,7 @@ services:
       caddy.tls: "internal"
     networks:
        - node
-    entrypoint: "bitcoind -datadir=/data -config=/data/bitcoin/bitcoin.conf"
+    entrypoint: "bitcoind -datadir=/data -conf=/data/bitcoin/bitcoin.conf"
     depends_on:
       - "caddy"
     restart: always
