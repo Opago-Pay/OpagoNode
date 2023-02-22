@@ -33,9 +33,8 @@ services:
       - ./bitcoin:/data/bitcoin/
       - bitcoin:/data
     labels:
-      caddy: bitcoin.yourdomain.de #change before use
+      caddy: bitcoin.yourdomain.com #changethis
       caddy.reverse_proxy: "{{upstreams 8333}}"
-      caddy.tls: "internal"
     networks:
        - node
     entrypoint: "bitcoind -datadir=/data -conf=/data/bitcoin/bitcoin.conf"
@@ -51,15 +50,11 @@ services:
     entrypoint: "lnd"
     networks:
       - node
-    labels:
-      caddy: lnd.yourdomain.de #change before use
-      caddy.reverse_proxy: "{{upstreams 9735}}"
-      caddy.tls: "internal"
+    ports:
+      - 9075:9735
     depends_on:
       - "caddy"
       - "tor"
-    ports:
-     - 9735:9735
     restart: always
 
   lnbits:
@@ -71,9 +66,8 @@ services:
     networks:
       - node
     labels:
-      caddy: lnbits.yourdomain.de #change before use
+      caddy: lnbits.yourdomain.com #changethis
       caddy.reverse_proxy: "{{upstreams 5000}}"
-      caddy.tls: "internal"
     environment:
       - "LND_REST_ENDPOINT=https://lnd:10009/"
     depends_on:
@@ -90,9 +84,8 @@ services:
     networks:
       - node
     labels:
-      caddy: thunderhub.yourdomain.de #change before use
+      caddy: thunderhub.yourdomain.com #changethis
       caddy.reverse_proxy: "{{upstreams 3500}}"
-      caddy.tls: "internal"
     environment:
       - PORT=3500
       - SSO_SERVER_URL=lnd:10009
