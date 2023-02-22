@@ -46,6 +46,11 @@ change domains  in docker-compose to your own domain, make sure that the subdoma
 ```
 nano docker-compose.yml
 ```
+## lnd.conf
+change domains, tor password etc in lnd.conf
+```
+nano ./lnd/lnd.conf
+```
 # Run Node
 ```
 docker-compose up -d
