@@ -72,4 +72,10 @@ docker-compose down
 If you don't want to use our docker containers, you can build them yourself. To do so cd into each build directory and run the docker build command with your desired tag, example below
 ```
 docker build -t opago/bitcoin:latest .
+docker push opago/bitcoin:latest
+```
+Then change the images in docker-compose.yml to your image tag.
+P.S. If you are not logged into the docker repo that you are trying to build for, the push command will give you an error. You can solve this by running.  
+```
+docker login
 ```
