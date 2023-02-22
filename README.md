@@ -40,7 +40,8 @@ sudo chmod +x /usr/local/bin/docker-compose
 git clone https://github.com/Opago-Pay/OpagoNode/
 cd OpagoNode
 ```
-# change rcp password from "password" to your password (same in both the btc and cln section) and node alias from "alias" to your alias
+# Adjust node configs
+## change domains  in docker-compose to your own domain, make sure that the subdomains are created and pointed to your node's host ip
 ```
 nano docker-compose.yml
 ```
