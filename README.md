@@ -68,3 +68,8 @@ docker-compose up -d
 ```
 docker-compose down
 ```
+# Build
+If you don't want to use our docker containers, you can build them yourself. To do so cd into each build directory and run the docker build command with your desired tag, example below
+```
+docker build -t opago/bitcoin:latest .
+```
