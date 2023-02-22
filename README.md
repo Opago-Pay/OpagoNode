@@ -48,3 +48,7 @@ nano docker-compose.yml
 ```
 docker-compose up -d
 ```
+# Stop Node
+```
+docker-compose down
+```
