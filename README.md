@@ -1,21 +1,22 @@
-With this repository you can easily install your own node as an alternative to using opag's node as a service. Tested with a mininal Debian 11 install.
+With this repository you can easily install your own node as an alternative to using opag's node as a service. Tested with a mininal Debian 11 install. This is a work in progresss, so use with care.
 
 # Prepare node installation
 ## install ufw as firewall and fail2ban for ssh bruteforce protection and other packages
 ```
 sudo apt update
-sudo apt install ufw
-sudo apt install curl
-sudo apt install nano
-sudo apt install git
+sudo apt install -y ufw curl nano git fail2ban
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow ssh
 sudo ufw allow http
 sudo ufw allow https
-sudo ufw allow 9050
+sudo ufw allow 9735
 sudo ufw enable
-sudo apt install fail2ban
+```
+## disable ipv6
+change IPV6=yes to IPV6=no
+```
+sudo nano /etc/default/ufw
 ```
 ## install docker
 ```
@@ -38,11 +39,6 @@ sudo chmod +x /usr/local/bin/docker-compose
 ```
 git clone https://github.com/Opago-Pay/OpagoNode/
 cd OpagoNode
-```
-# create the docker volumes
-```
-docker volume create bitcoin_data
-docker volume create clightning_data
 ```
 # change rcp password from "password" to your password (same in both the btc and cln section) and node alias from "alias" to your alias
 ```
