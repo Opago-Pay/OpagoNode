@@ -41,7 +41,8 @@ git clone https://github.com/Opago-Pay/OpagoNode/
 cd OpagoNode
 ```
 # Adjust node configs
-## change domains  in docker-compose to your own domain, make sure that the subdomains are created and pointed to your node's host ip
+## Domains
+change domains  in docker-compose to your own domain, make sure that the subdomains are created and pointed to your node's host ip
 ```
 nano docker-compose.yml
 ```
