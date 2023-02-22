@@ -1,5 +1,5 @@
 ControlPort 0.0.0.0:9051
-HashedControlPassword 16
+HashedControlPassword 16:xxx #replace 16:xxx with the string returned by tor hash password command 
 SocksPort 0.0.0.0:9050
 CookieAuthentication 1
 CookieAuthFileGroupReadable 1
