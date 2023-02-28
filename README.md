@@ -21,7 +21,7 @@ sudo nano /etc/default/ufw
 ## install docker
 ```
 curl -fsSL https://get.docker.com | sh
-sudo usermod -aG docker
+sudo usermod -aG docker $USER
 newgrp docker
 ```
 ### test docker installation
