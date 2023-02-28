@@ -54,7 +54,7 @@ nano ./lnd/lnd.conf
 # First Startup
 Hash your tor password, replace "password" with your password from the lnd.conf
 ```
-docker-compose pull
+docker-compose up -d
 docker run tor tor --hash-password password
 ```
 Copy the hash the above command returns and add it to your torrc.default
