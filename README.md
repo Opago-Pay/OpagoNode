@@ -66,6 +66,10 @@ nano ./tor/torrc.default
 ```
 docker-compose up -d
 ```
+# Check container status, replace btc with the container you want to check
+```
+docker logs -f btc
+```
 # Stop Node
 ```
 docker-compose down
