@@ -1,4 +1,4 @@
-With this repository you can easily install your own node as an alternative to using opago's node as a service. Tested with a mininal Debian 11 install. The intended use is for running this in clearnet hybrid mode, with a domain and apropriate subdomains available. This is a work in progresss, so use with care.
+With this repository you can easily install your own node as an alternative to using opago's node as a service. Tested with a minimal Debian 11 install. The intended use is for running this in clearnet hybrid mode, with a domain and apropriate subdomains available. This is a work in progresss, so use with care.
 
 # Prepare node installation
 ## install ufw as firewall and fail2ban for ssh bruteforce protection and other packages
