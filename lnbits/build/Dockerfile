@@ -27,8 +27,6 @@ ENV LND_GRPC_ENDPOINT=lnd
 ENV LND_GRPC_PORT=10009
 ENV LND_GRPC_CERT="/root/.lnd/tls.cert"
 ENV LND_GRPC_MACAROON="/root/.lnd/data/chain/bitcoin/mainnet/admin.macaroon"
-ENV LNBITS_ALLOWED_USERS="3bb63231682b4b82b53706e5648bd229"
-ENV LNBITS_ADMIN_USERS="3bb63231682b4b82b53706e5648bd229"
 ENV LNBITS_ADMIN_EXTENSIONS="ngrok, admin, user manager"
 
 CMD ["sh", "-c", "poetry run lnbits --port $LNBITS_PORT --host $LNBITS_HOST"]
