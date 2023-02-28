@@ -51,6 +51,10 @@ change domains, tor password etc in lnd.conf
 ```
 nano ./lnd/lnd.conf
 ```
+## lnd password
+```
+nano ./lnd/password.txt
+```
 # First Startup
 ## Tor
 Hash your tor password, replace "password" with your password from the lnd.conf
@@ -64,6 +68,7 @@ nano ./tor/torrc.default
 docker restart tor
 ```
 ## LND
+It's really important that you set the same password here as in the password.txt and that you store the 24 words returned by the command. Without these you cannot recover your wallet if anything goes wrong.
 ```
 docker exec -it lnd lncli create
 ```
