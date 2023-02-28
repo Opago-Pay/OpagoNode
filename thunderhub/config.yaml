@@ -1,0 +1,6 @@
+masterPassword: "xxx" #enter your password here
+accounts:
+  - name: "user" #name your account
+    serverUrl: "lnd:10009"
+    macaroonPath: "/root/.lnd/data/chain/bitcoin/mainnet/admin.macaroon"
+    certificatePath: "/root/.lnd/tls.cert"
