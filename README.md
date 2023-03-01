@@ -57,7 +57,8 @@ nano ./lnd/password.txt
 ```
 # First Startup
 ## Tor
-Hash your tor password, replace "password" with your password from the lnd.conf
+Hash your tor password, replace "password" with your password from the lnd.conf 
+Be carefull, certain special characters can lead to a failure of the command, "" will be included in the hash, so you'd need to add them to the tor password in lnd.conf as well.
 ```
 docker-compose up -d
 docker exec -it tor tor --hash-password password
