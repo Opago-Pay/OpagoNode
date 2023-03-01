@@ -1,5 +1,5 @@
 #run git clone https://github.com/lucaslorentz/caddy-docker-proxy/ ./build first in caddy dir
-#build currently not working as expected
+#build currently not working as expected, please use opago or lucaslorentz build
 FROM --platform=${BUILDPLATFORM} alpine:3.17.0 as alpine
 RUN apk add -U --no-cache ca-certificates
 RUN apk add nss-tools
