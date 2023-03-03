@@ -97,7 +97,7 @@ P.S. If you are not logged into the docker repo that you are trying to build for
 docker login
 ```
 # LND without BTC
-If your node is storage constrained, just use it without BTC. To do so, just replace the docker-compose.yml.
+If your node is storage constrained, just use it without BTC. To do so, just replace the docker-compose.yml. Do this before first starting the node.
 ```
 mv docker-compose-no-btc.yml docker-compose.yml
 ```
