@@ -99,5 +99,5 @@ docker login
 # LND without BTC
 If your node is storage constrained, just use it without BTC. To do so, just replace the docker-compose.yml.
 ```
-mv -f docker-compose-no-btc.yml docker-compose.yml
+mv docker-compose-no-btc.yml docker-compose.yml
 ```
