@@ -1,0 +1,90 @@
+version: "3"
+services:
+  caddy:
+    image: opago/caddy:latest
+    container_name: caddy
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - CADDY_INGRESS_NETWORKS=node
+    networks:
+      - node
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy:/data
+    restart: always
+    
+  tor:
+    image: opago/tor:latest
+    container_name: tor
+    ports:
+      - 9050:9050
+    networks:
+      - node
+    volumes:
+      - ./tor:/etc/tor/
+    restart: always
+    
+  lnd:
+    image: opago/lnd:latest
+    container_name: lnd
+    volumes:
+      - ./lnd:/root/.lnd
+    entrypoint: "lnd"
+    networks:
+      - node
+    ports:
+      - 9075:9735
+    depends_on:
+      - "caddy"
+      - "tor"
+    restart: always
+
+  lnbits:
+    image: opago/lnbits:latest
+    container_name: lnbits
+    volumes:
+      - "./lnbits:/app/data"
+      - "./lnd:/root/.lnd"
+    networks:
+      - node
+    labels:
+      caddy: lnbits.yourdomain.com #changethis
+      caddy.reverse_proxy: "{{upstreams 5000}}"
+    environment:
+      - "LND_REST_ENDPOINT=https://lnd:10009/"
+    depends_on:
+      - "caddy"
+      - "lnd"
+    restart: always
+    
+  thunderhub:
+    image: opago/thunderhub:latest
+    container_name: thunderhub
+    volumes:
+      - "./lnd:/root/.lnd"
+      - "./thunderhub:/root/th"
+    networks:
+      - node
+    labels:
+      caddy: thunderhub.yourdomain.com #changethis
+      caddy.reverse_proxy: "{{upstreams 3500}}"
+    environment:
+      - PORT=3500
+      - SSO_SERVER_URL=lnd:10009
+      - SSO_CERT_PATH=/root/.lnd/tls.cert
+      - SSO_MACAROON_PATH=/root/.lnd/data/chain/bitcoin/mainnet
+      - ACCOUNT_CONFIG_PATH=/root/th/config.yaml
+    depends_on:
+      - "caddy"
+      - "lnd"
+    restart: always
+    
+volumes:
+  caddy:
+    name: caddy
+
+networks:
+  node:
+    name: node
